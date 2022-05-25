@@ -2,10 +2,15 @@ import requests
 
 from django.shortcuts import render
 
+# comment next line if you want all currencies
+CURRENCIES = ['USD', 'EUR', 'BYN', 'RUB']
+
 
 def calculator(request):
     response = requests.get(url='https://api.exchangerate-api.com/v4/latest/USD').json()
-    currencies = response.get('rates')
+    # uncomment next & comment after next line if you want all currencies
+    # currencies = response.get('rates')
+    currencies = {currency: value for currency, value in response.get('rates').items() if currency in CURRENCIES}
 
     if request.method == 'GET':
         context = {
